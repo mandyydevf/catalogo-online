@@ -1,22 +1,16 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Nunito } from "next/font/google";
 import "./globals.css";
 
-const fraunces = Fraunces({
+const nunito = Nunito({
   subsets: ["latin"],
-  variable: "--font-display",
-  weight: ["400", "500", "600"],
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-body",
-  weight: ["400", "500", "600"],
+  variable: "--font-sans",
+  weight: ["400", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
-  title: "Catálogo Online",
-  description: "Catálogo de produtos com preços atualizados",
+  title: "Korukoo Doceria",
+  description: "Doces feitos com carinho — confira nosso cardápio e preços",
 };
 
 export default function RootLayout({
@@ -25,8 +19,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className={`${fraunces.variable} ${inter.variable}`}>
-      <body className="font-body">{children}</body>
+    <html lang="pt-BR" className={nunito.variable}>
+      <body className="font-body bg-bg">{children}</body>
     </html>
   );
 }

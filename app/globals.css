@@ -3,13 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --font-display: "Fraunces", serif;
-  --font-body: "Inter", sans-serif;
+  --font-sans: "Nunito", sans-serif;
 }
 
 body {
-  background-color: #fbf9f4;
-  color: #1f2a24;
+  background-color: #f5dbcb;
+  color: #4a2e39;
 }
 
 /* Foco visível no teclado, por acessibilidade */
@@ -17,6 +16,59 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid #b5673a;
+  outline: 2px solid #f92a82;
   outline-offset: 2px;
+}
+
+/* Ampliação de foto ao clicar — funciona sem JavaScript, usando :target */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.lightbox:target {
+  display: flex;
+}
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(74, 46, 57, 0.75);
+}
+
+.lightbox-content {
+  position: relative;
+  z-index: 1;
+}
+
+.lightbox-content img {
+  display: block;
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 24px;
+  object-fit: contain;
+  background: #fffbf7;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: #fffbf7;
+  color: #4a2e39;
+  font-size: 20px;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }

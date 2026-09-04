@@ -147,15 +147,15 @@ export default function DashboardClient({
   }
 
   return (
-    <main className="min-h-screen bg-paper px-6 py-10 sm:px-10">
-      <div className="flex items-center justify-between border-b border-line pb-6">
+    <main className="min-h-screen bg-bg px-6 py-10 sm:px-10">
+      <div className="flex items-center justify-between border-b border-sand/60 pb-6">
         <div>
-          <p className="text-sm tracking-wide text-moss">painel administrativo</p>
+          <p className="text-sm tracking-wide text-coral">painel administrativo</p>
           <h1 className="mt-1 font-display text-3xl text-ink">Meus produtos</h1>
         </div>
         <button
           onClick={handleLogout}
-          className="border border-ink px-4 py-2 text-sm text-ink transition hover:bg-ink hover:text-paper"
+          className="border border-ink px-4 py-2 text-sm text-ink transition hover:bg-ink hover:text-white"
         >
           Sair
         </button>
@@ -175,8 +175,8 @@ export default function DashboardClient({
                 required
                 value={form.nome}
                 onChange={(e) => setForm({ ...form, nome: e.target.value })}
-                className="mt-1 w-full border border-line bg-white px-3 py-2 text-ink outline-none"
-                placeholder="Ex: Camisa Polo Azul"
+                className="mt-1 w-full border border-sand/60 bg-white px-3 py-2 text-ink outline-none"
+                placeholder="Ex: Brigadeiro Gourmet"
               />
             </div>
 
@@ -185,9 +185,9 @@ export default function DashboardClient({
               <textarea
                 value={form.descricao}
                 onChange={(e) => setForm({ ...form, descricao: e.target.value })}
-                className="mt-1 w-full border border-line bg-white px-3 py-2 text-ink outline-none"
+                className="mt-1 w-full border border-sand/60 bg-white px-3 py-2 text-ink outline-none"
                 rows={3}
-                placeholder="Ex: Tamanhos P ao GG, 100% algodão"
+                placeholder="Ex: Caixa com 6 unidades, sabor tradicional"
               />
             </div>
 
@@ -198,8 +198,8 @@ export default function DashboardClient({
                 inputMode="decimal"
                 value={form.preco}
                 onChange={(e) => setForm({ ...form, preco: e.target.value })}
-                className="mt-1 w-full border border-line bg-white px-3 py-2 text-ink outline-none"
-                placeholder="Ex: 89.90"
+                className="mt-1 w-full border border-sand/60 bg-white px-3 py-2 text-ink outline-none"
+                placeholder="Ex: 24.90"
               />
             </div>
 
@@ -227,7 +227,7 @@ export default function DashboardClient({
               <button
                 type="submit"
                 disabled={salvando}
-                className="bg-ink px-4 py-2 text-paper transition hover:bg-ink/90 disabled:opacity-60"
+                className="bg-ink px-4 py-2 text-white transition hover:bg-ink/90 disabled:opacity-60"
               >
                 {salvando ? "Salvando..." : editandoId ? "Salvar alterações" : "Cadastrar produto"}
               </button>
@@ -235,7 +235,7 @@ export default function DashboardClient({
                 <button
                   type="button"
                   onClick={cancelarEdicao}
-                  className="border border-line px-4 py-2 text-ink/70"
+                  className="border border-sand/60 px-4 py-2 text-ink/70"
                 >
                   Cancelar
                 </button>
@@ -256,10 +256,10 @@ export default function DashboardClient({
               adicionar o primeiro.
             </p>
           ) : (
-            <ul className="mt-4 divide-y divide-line">
+            <ul className="mt-4 divide-y divide-sand/60">
               {produtos.map((produto) => (
                 <li key={produto.id} className="flex items-center gap-4 py-4">
-                  <div className="h-16 w-16 flex-shrink-0 overflow-hidden bg-line">
+                  <div className="h-16 w-16 flex-shrink-0 overflow-hidden bg-bg">
                     {produto.imagem_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -271,7 +271,7 @@ export default function DashboardClient({
                   </div>
                   <div className="flex-1">
                     <p className="text-ink">{produto.nome}</p>
-                    <p className="text-sm text-clay">
+                    <p className="text-sm text-pink">
                       {produto.preco.toLocaleString("pt-BR", {
                         style: "currency",
                         currency: "BRL",
@@ -280,7 +280,7 @@ export default function DashboardClient({
                   </div>
                   <button
                     onClick={() => iniciarEdicao(produto)}
-                    className="text-sm text-moss underline"
+                    className="text-sm text-coral underline"
                   >
                     Editar
                   </button>

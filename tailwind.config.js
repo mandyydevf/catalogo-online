@@ -7,15 +7,17 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        ink: "#1F2A24",
-        paper: "#FBF9F4",
-        clay: "#B5673A",
-        moss: "#4B5F45",
-        line: "#E2DDD1",
+        bg: "#F5DBCB",
+        surface: "#FFFBF7",
+        ink: "#4A2E39",
+        pink: "#F92A82",
+        coral: "#ED7B84",
+        sand: "#D6D5B3",
+        olive: "#7EB77F",
       },
       fontFamily: {
-        display: ["var(--font-display)"],
-        body: ["var(--font-body)"],
+        display: ["var(--font-sans)"],
+        body: ["var(--font-sans)"],
       },
     },
   },
