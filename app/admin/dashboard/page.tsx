@@ -8,7 +8,9 @@ export default async function DashboardPage() {
 
   const { data: produtos } = await supabase
     .from("produtos")
-    .select("id, nome, descricao, preco, imagem_url")
+    .select(
+      "id, nome, descricao, preco, imagem_url, categoria, selo, disponivel"
+    )
     .order("criado_em", { ascending: false });
 
   return <DashboardClient produtosIniciais={produtos ?? []} />;
