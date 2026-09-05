@@ -10,9 +10,20 @@ type Produto = {
   descricao: string | null;
   preco: number;
   imagem_url: string | null;
+  categoria: string | null;
+  selo: string | null;
+  disponivel: boolean;
 };
 
-const PRODUTO_VAZIO = { nome: "", descricao: "", preco: "", imagem: null as File | null };
+const PRODUTO_VAZIO = {
+  nome: "",
+  descricao: "",
+  preco: "",
+  categoria: "",
+  selo: "nenhum",
+  disponivel: true,
+  imagem: null as File | null,
+};
 
 export default function DashboardClient({
   produtosIniciais,
@@ -34,6 +45,9 @@ export default function DashboardClient({
       nome: produto.nome,
       descricao: produto.descricao ?? "",
       preco: String(produto.preco),
+      categoria: produto.categoria ?? "",
+      selo: produto.selo ?? "nenhum",
+      disponivel: produto.disponivel,
       imagem: null,
     });
   }
@@ -60,13 +74,12 @@ export default function DashboardClient({
       return;
     }
     if (Number.isNaN(precoNumerico) || precoNumerico < 0) {
-      setErro("Informe um preço válido (ex: 89.90).");
+      setErro("Informe um preço válido (ex: 24.90).");
       return;
     }
 
     setSalvando(true);
 
-    // 1. Se uma imagem nova foi escolhida, sobe pro Supabase Storage primeiro.
     let imagemUrl: string | undefined;
     if (form.imagem) {
       const nomeArquivo = `${Date.now()}-${form.imagem.name}`;
@@ -86,14 +99,20 @@ export default function DashboardClient({
       imagemUrl = publicUrlData.publicUrl;
     }
 
-    // 2. Cria ou atualiza o registro do produto no banco.
+    const dadosComuns = {
+      nome: form.nome,
+      descricao: form.descricao || null,
+      preco: precoNumerico,
+      categoria: form.categoria || null,
+      selo: form.selo === "nenhum" ? null : form.selo,
+      disponivel: form.disponivel,
+    };
+
     if (editandoId) {
       const { data, error } = await supabase
         .from("produtos")
         .update({
-          nome: form.nome,
-          descricao: form.descricao || null,
-          preco: precoNumerico,
+          ...dadosComuns,
           ...(imagemUrl ? { imagem_url: imagemUrl } : {}),
         })
         .eq("id", editandoId)
@@ -113,9 +132,7 @@ export default function DashboardClient({
       const { data, error } = await supabase
         .from("produtos")
         .insert({
-          nome: form.nome,
-          descricao: form.descricao || null,
-          preco: precoNumerico,
+          ...dadosComuns,
           imagem_url: imagemUrl ?? null,
         })
         .select()
@@ -204,6 +221,47 @@ export default function DashboardClient({
             </div>
 
             <div>
+              <label className="block text-sm text-ink/70">Categoria (opcional)</label>
+              <input
+                list="categorias-sugeridas"
+                value={form.categoria}
+                onChange={(e) => setForm({ ...form, categoria: e.target.value })}
+                className="mt-1 w-full border border-sand/60 bg-white px-3 py-2 text-ink outline-none"
+                placeholder="Ex: Bolos, Docinhos, Tortas..."
+              />
+              <datalist id="categorias-sugeridas">
+                <option value="Bolos" />
+                <option value="Docinhos" />
+                <option value="Tortas" />
+                <option value="Salgados" />
+              </datalist>
+            </div>
+
+            <div>
+              <label className="block text-sm text-ink/70">Marcador (opcional)</label>
+              <select
+                value={form.selo}
+                onChange={(e) => setForm({ ...form, selo: e.target.value })}
+                className="mt-1 w-full border border-sand/60 bg-white px-3 py-2 text-ink outline-none"
+              >
+                <option value="nenhum">Nenhum</option>
+                <option value="novidade">Novidade</option>
+                <option value="mais_pedido">Mais pedido</option>
+              </select>
+            </div>
+
+            <label className="flex items-center gap-2 text-sm text-ink/70">
+              <input
+                type="checkbox"
+                checked={form.disponivel}
+                onChange={(e) =>
+                  setForm({ ...form, disponivel: e.target.checked })
+                }
+              />
+              Disponível (desmarque se estiver esgotado)
+            </label>
+
+            <div>
               <label className="block text-sm text-ink/70">
                 Foto do produto {editandoId && "(deixe em branco pra manter a atual)"}
               </label>
@@ -270,13 +328,23 @@ export default function DashboardClient({
                     ) : null}
                   </div>
                   <div className="flex-1">
-                    <p className="text-ink">{produto.nome}</p>
+                    <p className="text-ink">
+                      {produto.nome}
+                      {!produto.disponivel && (
+                        <span className="ml-2 text-xs text-red-700">
+                          (esgotado)
+                        </span>
+                      )}
+                    </p>
                     <p className="text-sm text-pink">
                       {produto.preco.toLocaleString("pt-BR", {
                         style: "currency",
                         currency: "BRL",
                       })}
                     </p>
+                    {produto.categoria && (
+                      <p className="text-xs text-ink/50">{produto.categoria}</p>
+                    )}
                   </div>
                   <button
                     onClick={() => iniciarEdicao(produto)}
